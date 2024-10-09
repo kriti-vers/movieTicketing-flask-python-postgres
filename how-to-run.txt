@@ -1,0 +1,9 @@
+1. Set up PostgreSQL: Make sure PostgreSQL is running and you have the movie_ticketing database created with the tables defined above.
+
+2. Install Required Packages: Run the following command to install the required Python packages:
+
+        pip install Flask Flask-SQLAlchemy psycopg2
+3. Run the Flask Application:
+    python app.py
+
+4. Access the Application: Open your browser and go to http://127.0.0.1:5000

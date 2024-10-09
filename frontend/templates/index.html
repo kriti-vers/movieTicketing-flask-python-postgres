@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticketing System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Movie Ticketing System</h1>
+
+    <h2>Available Movies</h2>
+    <ul id="movies-list"></ul>
+
+    <h2>Book a Ticket</h2>
+    <form id="booking-form">
+        <input type="text" id="customer-name" placeholder="Your Name" required>
+        <input type="number" id="number-of-tickets" placeholder="Number of Tickets" required>
+        <select id="movie-select" required></select>
+        <button type="submit">Book Ticket</button>
+    </form>
+
+    <h2>Your Bookings</h2>
+    <ul id="bookings-list"></ul>
+
+    <script>
+        $(document).ready(function() {
+            // Fetch movies
+            $.get('/movies', function(movies) {
+                movies.forEach(function(movie) {
+                    $('#movies-list').append(`<li>${movie.title} - ${new Date(movie.showtime).toLocaleString()}</li>`);
+                    $('#movie-select').append(`<option value="${movie.id}">${movie.title}</option>`);
+                });
+            });
+
+            // Booking form submission
+            $('#booking-form').on('submit', function(event) {
+                event.preventDefault();
+                const data = {
+                    movie_id: $('#movie-select').val(),
+                    customer_name: $('#customer-name').val(),
+                    number_of_tickets: $('#number-of-tickets').val()
+                };
+                $.post('/book', JSON.stringify(data), function(response) {
+                    alert(response.message);
+                    location.reload();
+                }, 'json');
+            });
+
+            // Fetch bookings
+            $.get('/bookings', function(bookings) {
+                bookings.forEach(function(booking) {
+                    $('#bookings-list').append(`<li>Booking ID: ${booking.id}, Movie ID: ${booking.movie_id}, Customer: ${booking.customer_name}, Tickets: ${booking.number_of_tickets}</li>`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
