@@ -41,6 +41,7 @@
                     customer_name: $('#customer-name').val(),
                     number_of_tickets: $('#number-of-tickets').val()
                 };
+		console.log(data)
                 $.post('/book', JSON.stringify(data), function(response) {
                     alert(response.message);
                     location.reload();
